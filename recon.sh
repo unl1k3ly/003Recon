@@ -15,7 +15,7 @@
     domains_file="$output_dir/$@/domains.txt"
     crlf_file="$output_dir/$@/crlf.txt"
     open_redirects_file="$output_dir/$@/open_redirects.txt"
-    nmap_scan_file="$output_dir/$@/$@_nmap"
+    nmap_scan_file="$output_dir/$@/$@_nmap.txt"
     wordpress_file="$output_dir/$@/wordpress_sites.txt"
     headers_file="$output_dir/$@/sensitive_headers.txt"
     subdomain_take_over_file="$output_dir/$@/sub_take_over.txt"
