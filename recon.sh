@@ -35,15 +35,14 @@
     #webscreenshot_location="dependencies/webscreenshot"
     nmap_location="/bin/nmap"
 
-
-    cd $home_dir/$output_dir;
+    mkdir -p $output_dir;
+    cd $output_dir;
     # Uncomment on own risk. this will first clean the old results.
     #rm -rf $@;
     mkdir $@; 
     cd ../
 
     printf "\n -- $@ Started -- \n"
-    mkdir -p /root/aquatone/$@/003Recon
     python $sublister_location/sublist3r.py -o $all_domains_file -d $@;
     python $tools_dir/online.py $all_domains_file $domains_file;
     $tools_dir/crlf.sh $domains_file $crlf_file $crlf_payload_file;
