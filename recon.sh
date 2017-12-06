@@ -39,7 +39,7 @@
     cd $output_dir;
     # Uncomment on own risk. this will first clean the old results.
     #rm -rf $@;
-    mkdir $@; 
+    mkdir -p $@; 
     cd ../
 
     printf "\n -- $@ Started -- \n"
