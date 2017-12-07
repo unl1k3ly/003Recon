@@ -8,7 +8,7 @@
     tools_dir="tools"
     payloads_dir="payloads"
     dependencies_dir="dependencies"  
-    screenshots_dir="$output_dir/$@/screenshots"  
+#    screenshots_dir="$output_dir/$@/screenshots"  
 
 
     all_domains_file="$output_dir/$@/domains-all.txt"
@@ -33,14 +33,15 @@
     url_extractor_location="dependencies/relative-url-extractor"
     sublister_location="dependencies/sublister"
     #webscreenshot_location="dependencies/webscreenshot"
-    nmap_location="/bin/nmap"
+    nmap_location="/bin"
+
 
     mkdir -p $output_dir;
-    cd $output_dir;
+    cd $home_dir;
     # Uncomment on own risk. this will first clean the old results.
     #rm -rf $@;
-    mkdir -p $@; 
-    cd ../
+    #mkdir -p $@; 
+    #cd ../
 
     printf "\n -- $@ Started -- \n"
     python $sublister_location/sublist3r.py -o $all_domains_file -d $@;
@@ -53,10 +54,19 @@
     python $tools_dir/subdomain_takeover_scan.py $domains_file $subdomain_take_over_file;
     python $tools_dir/javascript_files_extractor.py $domains_file $javascript_files_file;
     $tools_dir/javascript_files_link_extractor.sh $javascript_files_file $javascript_extracted_urls $url_extractor_location/extract.rb;
-    python $webscreenshot_location/webscreenshot.py -i $domains_file -o $screenshots_dir;
+    #python $webscreenshot_location/webscreenshot.py -i $domains_file -o $screenshots_dir;
     python $tools_dir/wordpress_check.py $domains_file $wordpress_file;
     #$wpscan_location/wpscan.rb --update;
     #$tools_dir/wpscan_domains.sh $wordpress_file;
     $tools_dir/nmap_scan.sh $domains_file $nmap_scan_file $nmap_location;
     
     printf "\n -- $@ Finished -- \n"
+    
+    ## Adding sublister results to aquatone
+    
+    printf "\n -- Feeding sublist3r results from: $@ to Aquatone. -- \n"
+   awk '{gsub(".contentsecurity.com.au", "");print}' $all_domains_file >  /usr/local/rvm/gems/ruby-2.4.1/gems/aquatone-0.5.0/subdomains.lst
+    printf "\n -- Done ! -- \n"
+
+    
+    
