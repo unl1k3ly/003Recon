@@ -49,7 +49,7 @@
   
   ## Adding sublister results to aquatone
    printf "\n -- Feeding sublist3r results from: $@ to Aquatone. -- \n"
-   awk '{gsub(".contentsecurity.com.au", "");print}' $all_domains_file >  /usr/local/rvm/gems/ruby-2.4.1/gems/aquatone-0.5.0/subdomains.lst
+   awk '{gsub(".$@", "");print}' $all_domains_file >  /usr/local/rvm/gems/ruby-2.4.1/gems/aquatone-0.5.0/subdomains.lst
    printf "\n -- Done ! -- \n"
   #######
   
