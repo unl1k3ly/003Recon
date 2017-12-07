@@ -11,18 +11,18 @@
 #    screenshots_dir="$output_dir/$@/screenshots"  
 
 
-    all_domains_file="$output_dir/$@/domains-all.txt"
-    domains_file="$output_dir/$@/domains.txt"
-    crlf_file="$output_dir/$@/crlf.txt"
-    open_redirects_file="$output_dir/$@/open_redirects.txt"
-    nmap_scan_file="$output_dir/$@/$@_nmap.txt"
-    wordpress_file="$output_dir/$@/wordpress_sites.txt"
-    headers_file="$output_dir/$@/sensitive_headers.txt"
-    subdomain_take_over_file="$output_dir/$@/sub_take_over.txt"
-    javascript_files_file="$output_dir/$@/javascript_files.txt"
-    javascript_extracted_urls="$output_dir/$@/extracted_urls.txt"
-    error_page_info_file="$output_dir/$@/error_page_info.txt"
-    cors_file="$output_dir/$@/misconfigured_cors.txt"
+    all_domains_file="$output_dir/domains-all.txt"
+    domains_file="$output_dir/domains.txt"
+    crlf_file="$output_dir/crlf.txt"
+    open_redirects_file="$output_dir/open_redirects.txt"
+    nmap_scan_file="$output_dir/$@_nmap.txt"
+    wordpress_file="$output_dir/wordpress_sites.txt"
+    headers_file="$output_dir/sensitive_headers.txt"
+    subdomain_take_over_file="$output_dir/sub_take_over.txt"
+    javascript_files_file="$output_dir/javascript_files.txt"
+    javascript_extracted_urls="$output_dir/extracted_urls.txt"
+    error_page_info_file="$output_dir/error_page_info.txt"
+    cors_file="$output_dir/misconfigured_cors.txt"
 
     crlf_payload_file="$payloads_dir/crlf.txt"
     error_pages_payload_file="$payloads_dir/error_pages.txt"
@@ -45,7 +45,16 @@
 
     printf "\n -- $@ Started -- \n"
     python $sublister_location/sublist3r.py -o $all_domains_file -d $@;
-    python $tools_dir/online.py $all_domains_file $domains_file;
+  
+  
+  ## Adding sublister results to aquatone
+   printf "\n -- Feeding sublist3r results from: $@ to Aquatone. -- \n"
+   awk '{gsub(".contentsecurity.com.au", "");print}' $all_domains_file >  /usr/local/rvm/gems/ruby-2.4.1/gems/aquatone-0.5.0/subdomains.lst
+   printf "\n -- Done ! -- \n"
+  #######
+  
+  
+  python $tools_dir/online.py $all_domains_file $domains_file;
     $tools_dir/crlf.sh $domains_file $crlf_file $crlf_payload_file;
     $tools_dir/cors_misconfiguration_scan.sh $domains_file $cors_file;
     python $tools_dir/open_redirect.py $domains_file $open_redirects_file $open_redirect_payload_file;
@@ -62,11 +71,6 @@
     
     printf "\n -- $@ Finished -- \n"
     
-    ## Adding sublister results to aquatone
-    
-    printf "\n -- Feeding sublist3r results from: $@ to Aquatone. -- \n"
-   awk '{gsub(".contentsecurity.com.au", "");print}' $all_domains_file >  /usr/local/rvm/gems/ruby-2.4.1/gems/aquatone-0.5.0/subdomains.lst
-    printf "\n -- Done ! -- \n"
-
+  
     
     
